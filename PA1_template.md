@@ -1,6 +1,6 @@
 # Reproducible Research: Peer Assessment 1
 # Project 1
-# By MAVC 18/04/2015
+# By MAVC 05/05/2015
 
 ## Loading and preprocessing the data
 
