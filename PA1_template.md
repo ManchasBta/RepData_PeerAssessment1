@@ -23,6 +23,22 @@ hist(total_steps_per_day, breaks = 20, main = "Total number of steps per Day", x
 ```r
 mean_steps_per_day <-sapply(split(activity$steps, f=activity$date, drop = FALSE), mean, na.rm = TRUE)
 median_steps_per_day <-sapply(split(activity$steps, f=activity$date, drop = FALSE), median, na.rm = TRUE)
+mean(activity$steps, na.rm = TRUE)
+```
+
+```
+## [1] 37.3826
+```
+
+```r
+median(activity$steps, na.rm = TRUE)
+```
+
+```
+## [1] 0
+```
+
+```r
 summary_analysis <- data.frame(mean_steps_per_day,median_steps_per_day)
 summary_analysis
 ```
