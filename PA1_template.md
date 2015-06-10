@@ -1,17 +1,21 @@
 # Reproducible Research: Peer Assessment 1
 # Project 1
-# By MAVC 05/05/2015
+# By MAVC 18/04/2015
 
-## Loading and preprocessing the data
+## Loading and preprocessing the data.
+The data was loaded froma local file provided for this assignment. Dates were transform from character variables to a date variable. Intervals of activity were changed to represent the 5 minutes interval of a 24 hours day. 
+
 
 ```r
 library(ggplot2)
+setwd("~/My Documents/2015 Coursera/Data Science - Johns Hopkins Uni/05 Reproducible Research/Project 1/RepData_PeerAssessment1")
 activity <- read.csv("activity.csv")
 activity$date <- as.Date(activity$date)
 activity$interval <- (activity$interval%/%100)*60 + activity$interval%%100
 ```
 
 ## What is mean total number of steps taken per day?
+The number of steps pere day were calculated for each day and presented in the histogram below. Similarly the mean and median of each day was calculated an stored in a new variable summary_analysis. Only the first rows of the summary are showed.
 
 ```r
 total_steps_per_day <-sapply(split(activity$steps, f=activity$date, drop = FALSE), sum, na.rm = TRUE)
@@ -23,92 +27,22 @@ hist(total_steps_per_day, breaks = 20, main = "Total number of steps per Day", x
 ```r
 mean_steps_per_day <-sapply(split(activity$steps, f=activity$date, drop = FALSE), mean, na.rm = TRUE)
 median_steps_per_day <-sapply(split(activity$steps, f=activity$date, drop = FALSE), median, na.rm = TRUE)
-mean(activity$steps, na.rm = TRUE)
-```
-
-```
-## [1] 37.3826
-```
-
-```r
-median(activity$steps, na.rm = TRUE)
-```
-
-```
-## [1] 0
-```
-
-```r
 summary_analysis <- data.frame(mean_steps_per_day,median_steps_per_day)
-summary_analysis
+head(summary_analysis)
 ```
 
 ```
 ##            mean_steps_per_day median_steps_per_day
 ## 2012-10-01                NaN                   NA
-## 2012-10-02          0.4375000                    0
-## 2012-10-03         39.4166667                    0
-## 2012-10-04         42.0694444                    0
-## 2012-10-05         46.1597222                    0
-## 2012-10-06         53.5416667                    0
-## 2012-10-07         38.2465278                    0
-## 2012-10-08                NaN                   NA
-## 2012-10-09         44.4826389                    0
-## 2012-10-10         34.3750000                    0
-## 2012-10-11         35.7777778                    0
-## 2012-10-12         60.3541667                    0
-## 2012-10-13         43.1458333                    0
-## 2012-10-14         52.4236111                    0
-## 2012-10-15         35.2048611                    0
-## 2012-10-16         52.3750000                    0
-## 2012-10-17         46.7083333                    0
-## 2012-10-18         34.9166667                    0
-## 2012-10-19         41.0729167                    0
-## 2012-10-20         36.0937500                    0
-## 2012-10-21         30.6284722                    0
-## 2012-10-22         46.7361111                    0
-## 2012-10-23         30.9652778                    0
-## 2012-10-24         29.0104167                    0
-## 2012-10-25          8.6527778                    0
-## 2012-10-26         23.5347222                    0
-## 2012-10-27         35.1354167                    0
-## 2012-10-28         39.7847222                    0
-## 2012-10-29         17.4236111                    0
-## 2012-10-30         34.0937500                    0
-## 2012-10-31         53.5208333                    0
-## 2012-11-01                NaN                   NA
-## 2012-11-02         36.8055556                    0
-## 2012-11-03         36.7048611                    0
-## 2012-11-04                NaN                   NA
-## 2012-11-05         36.2465278                    0
-## 2012-11-06         28.9375000                    0
-## 2012-11-07         44.7326389                    0
-## 2012-11-08         11.1770833                    0
-## 2012-11-09                NaN                   NA
-## 2012-11-10                NaN                   NA
-## 2012-11-11         43.7777778                    0
-## 2012-11-12         37.3784722                    0
-## 2012-11-13         25.4722222                    0
-## 2012-11-14                NaN                   NA
-## 2012-11-15          0.1423611                    0
-## 2012-11-16         18.8923611                    0
-## 2012-11-17         49.7881944                    0
-## 2012-11-18         52.4652778                    0
-## 2012-11-19         30.6979167                    0
-## 2012-11-20         15.5277778                    0
-## 2012-11-21         44.3993056                    0
-## 2012-11-22         70.9270833                    0
-## 2012-11-23         73.5902778                    0
-## 2012-11-24         50.2708333                    0
-## 2012-11-25         41.0902778                    0
-## 2012-11-26         38.7569444                    0
-## 2012-11-27         47.3819444                    0
-## 2012-11-28         35.3576389                    0
-## 2012-11-29         24.4687500                    0
-## 2012-11-30                NaN                   NA
+## 2012-10-02            0.43750                    0
+## 2012-10-03           39.41667                    0
+## 2012-10-04           42.06944                    0
+## 2012-10-05           46.15972                    0
+## 2012-10-06           53.54167                    0
 ```
 
 ## What is the average daily activity pattern?
+
 
 ```r
 mean_daily_activity_pattern <-sapply(split(activity$steps, f=activity$interval, drop = FALSE), mean, na.rm = TRUE)
@@ -137,6 +71,9 @@ number_NA
 ```
 ## [1] 2304
 ```
+The number of missing values was calculated to be 2304. Those missing values were replace, by using the most common number of steps taken during a 5 minutes interval. Assuming the most likely value for the missing data is at large the most frequent number of steps taken across the 2 months of study.
+
+A summary of the results for the tidy data is showed bellow.
 
 ```r
 #New Data Frame
@@ -148,81 +85,27 @@ total_steps_per_day_noNA <-sapply(split(activity$steps, f=activity$date, drop = 
 hist(total_steps_per_day_noNA, breaks = 20, main = "Total number of steps per Day", xlab = "Number of Steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
 mean_steps_per_day_noNA <-sapply(split(activity$steps, f=activity$date, drop = FALSE), mean, na.rm = TRUE)
 median_steps_per_day_noNA <-sapply(split(activity$steps, f=activity$date, drop = FALSE), median, na.rm = TRUE)
 summary_analysis <- data.frame(mean_steps_per_day_noNA, median_steps_per_day_noNA)
-summary_analysis
+head(summary_analysis)
 ```
 
 ```
 ##            mean_steps_per_day_noNA median_steps_per_day_noNA
-## 2012-10-01               0.0000000                         0
-## 2012-10-02               0.4375000                         0
-## 2012-10-03              39.4166667                         0
-## 2012-10-04              42.0694444                         0
-## 2012-10-05              46.1597222                         0
-## 2012-10-06              53.5416667                         0
-## 2012-10-07              38.2465278                         0
-## 2012-10-08               0.0000000                         0
-## 2012-10-09              44.4826389                         0
-## 2012-10-10              34.3750000                         0
-## 2012-10-11              35.7777778                         0
-## 2012-10-12              60.3541667                         0
-## 2012-10-13              43.1458333                         0
-## 2012-10-14              52.4236111                         0
-## 2012-10-15              35.2048611                         0
-## 2012-10-16              52.3750000                         0
-## 2012-10-17              46.7083333                         0
-## 2012-10-18              34.9166667                         0
-## 2012-10-19              41.0729167                         0
-## 2012-10-20              36.0937500                         0
-## 2012-10-21              30.6284722                         0
-## 2012-10-22              46.7361111                         0
-## 2012-10-23              30.9652778                         0
-## 2012-10-24              29.0104167                         0
-## 2012-10-25               8.6527778                         0
-## 2012-10-26              23.5347222                         0
-## 2012-10-27              35.1354167                         0
-## 2012-10-28              39.7847222                         0
-## 2012-10-29              17.4236111                         0
-## 2012-10-30              34.0937500                         0
-## 2012-10-31              53.5208333                         0
-## 2012-11-01               0.0000000                         0
-## 2012-11-02              36.8055556                         0
-## 2012-11-03              36.7048611                         0
-## 2012-11-04               0.0000000                         0
-## 2012-11-05              36.2465278                         0
-## 2012-11-06              28.9375000                         0
-## 2012-11-07              44.7326389                         0
-## 2012-11-08              11.1770833                         0
-## 2012-11-09               0.0000000                         0
-## 2012-11-10               0.0000000                         0
-## 2012-11-11              43.7777778                         0
-## 2012-11-12              37.3784722                         0
-## 2012-11-13              25.4722222                         0
-## 2012-11-14               0.0000000                         0
-## 2012-11-15               0.1423611                         0
-## 2012-11-16              18.8923611                         0
-## 2012-11-17              49.7881944                         0
-## 2012-11-18              52.4652778                         0
-## 2012-11-19              30.6979167                         0
-## 2012-11-20              15.5277778                         0
-## 2012-11-21              44.3993056                         0
-## 2012-11-22              70.9270833                         0
-## 2012-11-23              73.5902778                         0
-## 2012-11-24              50.2708333                         0
-## 2012-11-25              41.0902778                         0
-## 2012-11-26              38.7569444                         0
-## 2012-11-27              47.3819444                         0
-## 2012-11-28              35.3576389                         0
-## 2012-11-29              24.4687500                         0
-## 2012-11-30               0.0000000                         0
+## 2012-10-01                 0.00000                         0
+## 2012-10-02                 0.43750                         0
+## 2012-10-03                39.41667                         0
+## 2012-10-04                42.06944                         0
+## 2012-10-05                46.15972                         0
+## 2012-10-06                53.54167                         0
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
+By separating the weekdays from weekends we can see a strong difference in the pattern, as showed by the graphic bellow. The numbers of steps taken is bigger on weekday showing a increase activity across the day except for the time were the subjects were more likely to be asleep.
 
 ```r
 activity$day <- weekdays(activity$date)
@@ -239,8 +122,8 @@ weekdays <- activity[which(activity$day == 'weekend'),]
 mean_weekdays_activity_pattern <-sapply(split(weekdays$steps, f=weekdays$interval, drop = FALSE), mean, na.rm = TRUE)
 mean_weekends_activity_pattern <-sapply(split(weekends$steps, f=weekends$interval, drop = FALSE), mean, na.rm = TRUE)
 par(mfrow = c(1, 2))
-plot(names(mean_weekdays_activity_pattern), mean_weekdays_activity_pattern, type = "l", main = "Mean Daily Activity Pattern", xlab = "Day in minutes", ylab = "Average steps across all days")
-plot(names(mean_weekends_activity_pattern), mean_weekends_activity_pattern, type = "l", main = "Mean Daily Activity Pattern", xlab = "Day in minutes", ylab = "Average steps across all days")
+plot(names(mean_weekdays_activity_pattern), mean_weekdays_activity_pattern, type = "l", main = "Mean Weekdays Activity Pattern", xlab = "Day in minutes", ylab = "Average steps across weekdays")
+plot(names(mean_weekends_activity_pattern), mean_weekends_activity_pattern, type = "l", main = "Mean Weekend Activity Pattern", xlab = "Day in minutes", ylab = "Average steps across weekends")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
